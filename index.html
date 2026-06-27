@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>投资宇宙</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; background: #000; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+#wrap { width: 100vw; height: 100vh; position: relative; overflow: hidden; background: #000; }
+#c3d { width: 100%; height: 100%; display: block; }
+#title {
+  position: absolute; top: 28px; left: 50%; transform: translateX(-50%);
+  font-size: 22px; font-weight: 500; color: rgba(255,255,255,0.9);
+  letter-spacing: 4px; text-shadow: 0 0 20px rgba(180,120,255,0.6);
+  pointer-events: none;
+}
+#hint {
+  position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
+  font-size: 12px; color: rgba(255,255,255,0.28); pointer-events: none;
+  letter-spacing: 1px;
+}
+.glabel {
+  position: absolute; transform: translate(-50%,0);
+  color: #fff; font-size: 13px; font-weight: 500; text-align: center;
+  text-shadow: 0 0 10px rgba(255,255,255,0.8);
+  pointer-events: none; white-space: nowrap;
+}
+
+/* ── panel ── */
+.panel {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, #06102a 0%, #020510 90%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity .4s;
+}
+.panel.active { opacity: 1; pointer-events: all; }
+.panel-title {
+  font-size: 22px; font-weight: 500; color: #e8d5ff;
+  text-shadow: 0 0 20px #b06aff; margin-bottom: 52px; letter-spacing: 2px;
+}
+.back-btn {
+  position: absolute; top: 28px; left: 50%; transform: translateX(-50%);
+  background: rgba(255,255,255,0.08); border: 0.5px solid rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.85); padding: 10px 32px; border-radius: 28px;
+  cursor: pointer; font-size: 14px; font-weight: 500; letter-spacing: 1px;
+  transition: background .2s, box-shadow .2s;
+  box-shadow: 0 0 14px rgba(168,85,247,0.25);
+}
+.back-btn:hover { background: rgba(168,85,247,0.28); box-shadow: 0 0 24px rgba(168,85,247,0.6); color: #fff; }
+
+/* ── star cards ── */
+.stars-row {
+  display: flex; gap: 80px; align-items: center; justify-content: center;
+  flex-wrap: wrap; padding: 20px;
+}
+.star-item {
+  display: flex; flex-direction: column; align-items: center;
+  cursor: pointer; transition: transform .25s;
+}
+.star-item:hover { transform: scale(1.08); }
+.star-core {
+  border-radius: 50%; width: 100px; height: 100px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 500; color: #fff;
+  text-align: center; line-height: 1.5; padding: 10px;
+  margin-bottom: 12px; position: relative;
+}
+.star-core::before {
+  content:''; position:absolute; inset:-8px; border-radius:50%;
+  opacity:.28; animation:pulse 2.8s ease-in-out infinite;
+}
+.ali  { background:radial-gradient(circle at 35% 35%,#ff9f4a,#e05800); box-shadow:0 0 32px #ff7a1a; }
+.ali::before  { background:#ff7a1a; }
+.ten  { background:radial-gradient(circle at 35% 35%,#6af,#0047b3); box-shadow:0 0 32px #0080ff; }
+.ten::before  { background:#0080ff; }
+.smic { background:radial-gradient(circle at 35% 35%,#6eefb2,#00875a); box-shadow:0 0 32px #00c87a; }
+.smic::before { background:#00c87a; }
+@keyframes pulse { 0%,100%{transform:scale(1);opacity:.28} 50%{transform:scale(1.35);opacity:.1} }
+.star-name { font-size:14px; color:rgba(255,255,255,0.88); text-align:center; margin-bottom:4px; }
+.ticker { font-size:12px; color:rgba(255,255,255,0.38); }
+.panel-hint { font-size:12px; color:rgba(255,255,255,0.28); margin-top:28px; letter-spacing:1px; }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="c3d"></canvas>
+  <div id="title">投资宇宙</div>
+  <div id="hint">拖动旋转 · 滚轮缩放 · 点击星系探索</div>
+
+  <!-- 港股面板 -->
+  <div class="panel" id="hkPanel">
+    <button class="back-btn" onclick="closePanel()">🚀 返回投资宇宙</button>
+    <div class="panel-title">港股星系</div>
+    <div class="stars-row">
+      <div class="star-item" onclick="window.open('https://yangaikaka.github.io/Alibaba/','_blank')">
+        <div class="star-core ali">阿里<br>巴巴</div>
+        <div class="star-name">阿里巴巴</div>
+        <div class="ticker">9988.HK</div>
+      </div>
+      <div class="star-item">
+        <div class="star-core ten">腾讯<br>控股</div>
+        <div class="star-name">腾讯控股</div>
+        <div class="ticker">0700.HK</div>
+      </div>
+      <div class="star-item">
+        <div class="star-core smic">中芯<br>国际</div>
+        <div class="star-name">中芯国际</div>
+        <div class="ticker">0981.HK</div>
+      </div>
+    </div>
+    <div class="panel-hint">点击恒星跳转详情</div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const cont = document.getElementById('wrap');
+const cv   = document.getElementById('c3d');
+const W = () => cont.clientWidth, H = () => cont.clientHeight;
+
+const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(W(), H());
+renderer.setClearColor(0x010408, 1);
+
+const scene  = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(55, W()/H(), .1, 1000);
+camera.position.set(0, 18, 40);
+camera.lookAt(0, 0, 0);
+
+// ── textures ──────────────────────────────────────────
+function dotTex() {
+  const s=128, c=document.createElement('canvas'); c.width=c.height=s;
+  const x=c.getContext('2d');
+  const g=x.createRadialGradient(s/2,s/2,0,s/2,s/2,s/2);
+  g.addColorStop(0,'rgba(255,255,255,1)');
+  g.addColorStop(0.12,'rgba(255,255,255,1)');
+  g.addColorStop(0.45,'rgba(255,255,255,0.5)');
+  g.addColorStop(1,'rgba(255,255,255,0)');
+  x.fillStyle=g; x.fillRect(0,0,s,s);
+  return new THREE.CanvasTexture(c);
+}
+
+function glowTex() {
+  const s=256, c=document.createElement('canvas'); c.width=c.height=s;
+  const x=c.getContext('2d'), cx=s/2;
+  const g=x.createRadialGradient(cx,cx,0,cx,cx,cx);
+  g.addColorStop(0,'rgba(255,255,255,1)');
+  g.addColorStop(0.05,'rgba(255,255,255,1)');
+  g.addColorStop(0.15,'rgba(255,255,255,0.85)');
+  g.addColorStop(0.35,'rgba(255,255,255,0.4)');
+  g.addColorStop(0.6,'rgba(255,255,255,0.1)');
+  g.addColorStop(1,'rgba(255,255,255,0)');
+  x.fillStyle=g; x.fillRect(0,0,s,s);
+  return new THREE.CanvasTexture(c);
+}
+
+const TEX = dotTex(), GLOW = glowTex();
+
+// ── background stars ───────────────────────────────────
+const bpos=[];
+for(let i=0;i<2500;i++) bpos.push((Math.random()-.5)*500,(Math.random()-.5)*500,(Math.random()-.5)*500);
+const bg=new THREE.BufferGeometry();
+bg.setAttribute('position',new THREE.Float32BufferAttribute(bpos,3));
+scene.add(new THREE.Points(bg, new THREE.PointsMaterial({
+  color:0xffffff, size:0.18, map:TEX,
+  transparent:true, depthWrite:false, sizeAttenuation:true
+})));
+
+// ── shader ────────────────────────────────────────────
+const VERT=`attribute float size;attribute vec3 color;varying vec3 vC;
+void main(){vC=color;vec4 mv=modelViewMatrix*vec4(position,1.);gl_PointSize=size*(300./-mv.z);gl_Position=projectionMatrix*mv;}`;
+const FRAG=`uniform sampler2D tex;varying vec3 vC;
+void main(){float a=texture2D(tex,gl_PointCoord).r;if(a<0.02)discard;gl_FragColor=vec4(vC,a);}`;
+function armMat() {
+  return new THREE.ShaderMaterial({
+    uniforms:{tex:{value:TEX}},
+    vertexShader:VERT, fragmentShader:FRAG,
+    transparent:true, depthWrite:false,
+    blending:THREE.AdditiveBlending, vertexColors:true
+  });
+}
+
+// ── galaxy configs ─────────────────────────────────────
+const CFGS = [
+  { name:'美股星系', rgb:[52,211,153],  x: 9,  z:-3, tx:.18, tz:.07, arms:7, R:7.2, N:5000, spd:.0016, click:null,
+    stars:[{pos:[0,0,0],scale:1.8,col:[1,1,.95]},{pos:[2.2,.05,.8],scale:.7,col:[.6,.9,1]},{pos:[-1.8,0,2.1],scale:.5,col:[1,.7,.3]}] },
+  { name:'A股星系',  rgb:[248,113,113], x:-8,  z: 3, tx:.30, tz:.10, arms:5, R:4.5, N:3000, spd:.0022, click:null,
+    stars:[{pos:[0,0,0],scale:1.3,col:[1,.85,.7]},{pos:[1.5,.04,-.9],scale:.5,col:[1,.4,.4]}] },
+  { name:'港股星系', rgb:[168,85,247],  x:-5,  z:-9, tx:.40, tz:.05, arms:5, R:3.0, N:1800, spd:.003,  click:'hk',
+    stars:[{pos:[0,0,0],scale:1.0,col:[.9,.7,1]},{pos:[1.0,.03,.5],scale:.4,col:[.6,.4,1]}] },
+  { name:'韩股星系', rgb:[251,191,36],  x: 7,  z: 9, tx:.25, tz:.09, arms:4, R:2.5, N:1200, spd:.0038, click:null,
+    stars:[{pos:[0,0,0],scale:.85,col:[1,.95,.6]}] },
+];
+
+const groups=[], labels=[];
+
+function build(cfg) {
+  const [ri,gi,bi]=cfg.rgb, fr=ri/255,fg=gi/255,fb=bi/255;
+  const grp=new THREE.Group();
+  grp.rotation.x=cfg.tx; grp.rotation.z=cfg.tz;
+  grp.position.set(cfg.x,0,cfg.z);
+
+  // arm particles
+  const pos=[],col=[],sz=[];
+  const perArm=Math.floor(cfg.N*.88/cfg.arms);
+  for(let a=0;a<cfg.arms;a++){
+    const base=(a/cfg.arms)*Math.PI*2;
+    for(let i=0;i<perArm;i++){
+      const t=i/perArm, r=t*cfg.R;
+      const ang=base+t*5.5+(Math.random()-.5)*.22;
+      const spr=(.02+t*.08)*cfg.R;
+      pos.push(Math.cos(ang)*r+(Math.random()-.5)*spr,(Math.random()-.5)*spr*.12,Math.sin(ang)*r+(Math.random()-.5)*spr);
+      const hot=Math.pow(1-t,1.2);
+      col.push(Math.min(1,fr+.5*hot+.3),Math.min(1,fg+.5*hot+.3),Math.min(1,fb+.5*hot+.3));
+      sz.push((1.2-t*.5)*(Math.random()*2+.8));
+    }
+  }
+  for(let i=0;i<Math.floor(cfg.N*.07);i++){
+    const ang=Math.random()*Math.PI*2,r=Math.pow(Math.random(),.6)*cfg.R;
+    pos.push(Math.cos(ang)*r,(Math.random()-.5)*.1,Math.sin(ang)*r);
+    col.push(Math.min(1,fr+.4),Math.min(1,fg+.4),Math.min(1,fb+.4));
+    sz.push(Math.random()*.8+.3);
+  }
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
+  geo.setAttribute('color',   new THREE.Float32BufferAttribute(col,3));
+  geo.setAttribute('size',    new THREE.Float32BufferAttribute(sz,1));
+  grp.add(new THREE.Points(geo,armMat()));
+
+  // central stars — pure radial glow
+  cfg.stars.forEach(s=>{
+    const [r,g,b]=s.col;
+    const halo=new THREE.Sprite(new THREE.SpriteMaterial({
+      map:GLOW, color:new THREE.Color(r,g,b),
+      transparent:true, depthWrite:false, blending:THREE.AdditiveBlending, opacity:.9
+    }));
+    const sc=cfg.R*s.scale*.6;
+    halo.scale.set(sc,sc,1);
+    halo.position.set(...s.pos);
+    grp.add(halo);
+
+    const core=new THREE.Sprite(new THREE.SpriteMaterial({
+      map:TEX, color:new THREE.Color(1,1,1),
+      transparent:true, depthWrite:false, blending:THREE.AdditiveBlending, opacity:1
+    }));
+    const cs=cfg.R*s.scale*.09;
+    core.scale.set(cs,cs,1);
+    core.position.set(...s.pos);
+    grp.add(core);
+  });
+
+  scene.add(grp);
+  return grp;
+}
+
+CFGS.forEach(cfg=>{
+  groups.push({g:build(cfg),cfg});
+  const el=document.createElement('div');
+  el.className='glabel'; el.textContent=cfg.name;
+  cont.appendChild(el); labels.push(el);
+});
+
+// ── orbit control ──────────────────────────────────────
+let drag=false,px=0,py=0,theta=.48,phi=.38,dist=42;
+function cam(){
+  camera.position.set(
+    dist*Math.sin(theta)*Math.cos(phi),
+    dist*Math.sin(phi),
+    dist*Math.cos(theta)*Math.cos(phi)
+  );
+  camera.lookAt(0,0,0);
+}
+cam();
+cv.addEventListener('mousedown',e=>{drag=true;px=e.clientX;py=e.clientY;});
+window.addEventListener('mouseup',()=>drag=false);
+window.addEventListener('mousemove',e=>{
+  if(!drag)return;
+  theta-=(e.clientX-px)*.007; phi+=(e.clientY-py)*.005;
+  phi=Math.max(-.5,Math.min(1.1,phi));
+  px=e.clientX;py=e.clientY;cam();
+});
+cv.addEventListener('wheel',e=>{
+  dist=Math.max(12,Math.min(90,dist+e.deltaY*.04));
+  cam(); e.preventDefault();
+},{passive:false});
+let lt=null;
+cv.addEventListener('touchstart',e=>{lt=e.touches[0];},{passive:true});
+cv.addEventListener('touchmove',e=>{
+  if(!lt)return;
+  const t=e.touches[0];
+  theta-=(t.clientX-lt.clientX)*.007;
+  phi+=(t.clientY-lt.clientY)*.005;
+  phi=Math.max(-.5,Math.min(1.1,phi));
+  lt=t;cam();e.preventDefault();
+},{passive:false});
+
+// ── click detection ────────────────────────────────────
+cv.addEventListener('click',e=>{
+  const rect=cv.getBoundingClientRect();
+  const m=new THREE.Vector2(
+    ((e.clientX-rect.left)/rect.width)*2-1,
+    -((e.clientY-rect.top)/rect.height)*2+1
+  );
+  const ray=new THREE.Raycaster(); ray.setFromCamera(m,camera);
+  groups.forEach(({g,cfg})=>{
+    if(!cfg.click)return;
+    if(ray.ray.intersectsSphere(new THREE.Sphere(g.position,cfg.R*1.6),new THREE.Vector3()))
+      openPanel(cfg.click);
+  });
+});
+
+function openPanel(id){
+  const panel = document.getElementById(id+'Panel');
+  if(!panel) return;
+  panel.classList.add('active');
+  cv.style.pointerEvents='none';
+  document.getElementById('hint').style.opacity='0';
+  document.getElementById('title').style.opacity='0';
+}
+function closePanel(){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  cv.style.pointerEvents='all';
+  document.getElementById('hint').style.opacity='1';
+  document.getElementById('title').style.opacity='1';
+}
+window.closePanel = closePanel;
+
+// ── label projection ───────────────────────────────────
+const tmp=new THREE.Vector3();
+function toScr(p){
+  tmp.copy(p); tmp.project(camera);
+  return {x:(tmp.x*.5+.5)*W(), y:(-tmp.y*.5+.5)*H()};
+}
+
+// ── render loop ────────────────────────────────────────
+function animate(){
+  requestAnimationFrame(animate);
+  groups.forEach(({g,cfg},i)=>{
+    g.rotation.y+=cfg.spd;
+    const s=toScr(g.position);
+    labels[i].style.left=s.x+'px';
+    labels[i].style.top=(s.y+52)+'px';
+  });
+  renderer.render(scene,camera);
+}
+animate();
+
+window.addEventListener('resize',()=>{
+  renderer.setSize(W(),H());
+  camera.aspect=W()/H();
+  camera.updateProjectionMatrix();
+});
+</script>
+</body>
+</html>
